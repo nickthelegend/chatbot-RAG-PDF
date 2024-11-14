@@ -18,12 +18,12 @@ genai.configure(api_key="AIzaSyALAJkf3rKlp9kagLpanYb2ZWXdHn-aOKE")
 
 
 
-# import json
-# import google.auth
+import json
+import google.auth
 
-# # Set credentials directly from secrets (replace "your_service_account_json" with the actual JSON key content from Streamlit secrets)
-# credentials_info = json.loads(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"])
-# credentials = google.auth.credentials.from_service_account_info(credentials_info)
+# Set credentials directly from secrets (replace "your_service_account_json" with the actual JSON key content from Streamlit secrets)
+credentials_info = json.loads(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"])
+credentials = google.auth.credentials.from_service_account_info(credentials_info)
 
 # Function to extract text from a specified PDF file
 def get_pdf_text(pdf_path):
