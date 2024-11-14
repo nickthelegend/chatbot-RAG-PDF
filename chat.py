@@ -35,6 +35,13 @@ if 'credentials_info' in locals():
 else:
     print("Failed to load credentials.")
 
+
+import json
+from google.oauth2 import service_account
+import streamlit as st
+# Retrieve the JSON from Streamlit secrets
+credentials_info = json.loads(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"])
+credentials = service_account.Credentials.from_service_account_info(credentials_info)
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "stellar-depth-419411-f072fec7d927.json"
 genai.configure(api_key="AIzaSyALAJkf3rKlp9kagLpanYb2ZWXdHn-aOKE")
 
