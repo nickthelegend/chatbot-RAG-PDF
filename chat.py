@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 # Load environment variables and Google API credentials
 load_dotenv()
 os.getenv("GOOGLE_API_KEY")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:\\Users\\testi\\Desktop\\temp\\jntu\\stellar-depth-419411-f072fec7d927.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "stellar-depth-419411-f072fec7d927.json"
 genai.configure(api_key="AIzaSyALAJkf3rKlp9kagLpanYb2ZWXdHn-aOKE")
 
 # Function to extract text from a specified PDF file
@@ -51,8 +51,8 @@ def get_conversational_chain():
     chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
     return chain
 
-# Function to process user input and generate a response
-def user_input(user_question):
+# Initialize the chat interface
+def chatbot_response(user_question):
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     new_db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
     docs = new_db.similarity_search(user_question)
@@ -62,26 +62,40 @@ def user_input(user_question):
         {"input_documents": docs, "question": user_question},
         return_only_outputs=True,
     )
-    print(response)
-    st.write("Reply: ", response["output_text"])
+    return response["output_text"]
 
-# Main function
+# Main function for chatbot interface
 def main():
     st.set_page_config("JNTU BOT")
-    st.header("JNTU BOT 💁")
+    st.header("JNTU BOT 🏛️")
 
-    user_question = st.text_input("Ask a Question from the PDF")
+    # Processing the static PDF document on startup
+    pdf_path = "jntu.pdf"  # Specify the path to your static PDF document
+    with st.spinner("Processing the document..."):
+        raw_text = get_pdf_text(pdf_path)
+        text_chunks = get_text_chunks(raw_text)
+        get_vector_store(text_chunks)
+        st.success("Document processed and vector store created successfully.")
 
-    if user_question:
-        user_input(user_question)
+    # Initialize session state for messages
+    if 'messages' not in st.session_state:
+        st.session_state.messages = []
 
-    # Processing a static PDF file instead of user upload
-    pdf_path = "jntu.pdf"  # Specify the path to the static PDF document here
-    with st.spinner("Processing..."):
-                raw_text = get_pdf_text(pdf_path)
-                text_chunks = get_text_chunks(raw_text)
-                get_vector_store(text_chunks)
-                st.success("Document processed and vector store created successfully.")
+    # Display conversation history
+    for message in st.session_state.messages:
+        st.chat_message(message['role']).markdown(message['content'])
+
+    # User input through chat interface
+    prompt = st.chat_input("Ask your question here...")
+    if prompt:
+        # Display user message
+        st.chat_message("user").markdown(prompt)
+        st.session_state.messages.append({"role": "user", "content": prompt})
+
+        # Generate assistant response
+        response = chatbot_response(prompt)
+        st.chat_message("assistant").markdown(response)
+        st.session_state.messages.append({"role": "assistant", "content": response})
 
 if __name__ == "__main__":
     main()
