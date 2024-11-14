@@ -19,11 +19,21 @@ genai.configure(api_key="AIzaSyALAJkf3rKlp9kagLpanYb2ZWXdHn-aOKE")
 
 
 import json
-import google.auth
+import streamlit as st
+from google.oauth2 import service_account
 
-# Set credentials directly from secrets (replace "your_service_account_json" with the actual JSON key content from Streamlit secrets)
-credentials_info = json.loads(st.secrets["GOOGLE_APPLICATION_CREDENTIALS"])
-credentials = google.auth.credentials.from_service_account_info(credentials_info)
+# Read the JSON credentials file and load its contents
+credentials_path = "stellar-depth-419411-f072fec7d927.json"  # Specify the path to your JSON file here
+
+with open(credentials_path) as file:
+    credentials_info = json.load(file)
+
+# Now use `credentials_info` to create a service account credentials object
+credentials = service_account.Credentials.from_service_account_info(credentials_info)
+
+# Test by printing or using `credentials` object as required
+print("Loaded credentials:", credentials)
+
 
 # Function to extract text from a specified PDF file
 def get_pdf_text(pdf_path):
