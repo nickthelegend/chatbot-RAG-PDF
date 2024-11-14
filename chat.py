@@ -13,55 +13,8 @@ from dotenv import load_dotenv
 # Load environment variables and Google API credentials
 load_dotenv()
 os.getenv("GOOGLE_API_KEY")
-
-
-import json
-from google.oauth2 import service_account
-
-credentials_path = "stellar-depth-419411-f072fec7d927.json"  # Make sure this path is correct
-
-try:
-    with open(credentials_path, "r") as file:
-        credentials_info = json.load(file)
-except FileNotFoundError:
-    print("Error: JSON file not found. Check the file path.")
-except json.JSONDecodeError:
-    print("Error: Failed to decode JSON. Check the file contents.")
-
-# Initialize the credentials if JSON was successfully loaded
-if 'credentials_info' in locals():
-    credentials = service_account.Credentials.from_service_account_info(credentials_info)
-    print("Credentials successfully loaded.")
-else:
-    print("Failed to load credentials.")
-
-
-import json
-from google.oauth2 import service_account
-import streamlit as st
-# Retrieve the JSON from Streamlit secrets
-credentials_info = {
-  "type": "service_account",
-  "project_id": "stellar-depth-419411",
-  "private_key_id": "f072fec7d927683055cb4851c50a00b911cdf6f3",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCaE0Y0+kp2jk4X\n1JET7qivLsRNlum/Sr1OJOwb3UoIJBOcotII/73dx5JKndBIbY3a+ng5Os3b0ROA\nEvpXHX58a/yre2dLOlEU0sAXGY8NSvYo1Cd/NcSAk11x/nciD84IXFyMOpRG6d/H\nUUzR5BUtJ9zPmVpfgKr1MNZx2mlbWOJiXN+ALG2oRNA4IxhRWY8sleJUhgo0tiHw\nFFdoaoEXRy5d//1enMndJ29sfg7pCDqrV+KvWCqXNmCCcV8SCjeExot8OYqgyQmX\n7sv2UuFtAsntscZs6zSULVLe6abl3ki+K15wa5tKSSVzxYZGY7Veq3W68P7pf4re\ncLg/DdoPAgMBAAECggEAAOkhQOMM+XpFauR/Y06zT4nCubJkAkum3YC7pobMGErw\nAnOkMypqqF9rh7ioo9qqfDERgvyDD/nCc6zWwT19LGYXSJWd7L/5j7XgCTUz0pvK\nda0tDSilaXhHy8F5x4Ad/EbO58xraPC/XciUu5W2mgsUxfWiJwo2AZxH7emhEaUR\nti/hXqv7EoBtjhEg610+vpmIUU2x/kWQm9cCYUZITJBXLsVJmEBdt9sAtXbq9dER\nsExPGZKRyL3BpWO2wWqYv8fs3OGQ70db/1j4Pj8EHqyfvO76y6zBCriR8ACW8/l5\nOm4j+RK0T8uDqrr252WX9yDrksoDRTBeE+tAPmvydQKBgQDPVHUR5D8A+NPhQoCx\nEY4V21u2yEqL++B/uchi5RL25EiZklgifdMX0KoCp4zDDw/0R3eVMUmjKNzmdyDm\nzxsc2NHpwIFr3ZWh4vPpqaMqVNXhHUGYKM6+N5kL0VdkTIJbtvu6/x+6OEKyxIL4\n07eI6vC5eoXtbFnYFgr+z81xMwKBgQC+Pneacz1rbB/v6DNuJWRl1EccsRePzffX\nwoQUbQAcvCGKMeyhEmFjuokK1neBp0A2whoCUuSEBAOWpjJNsIzmZpawx0jVvgy/\n2JhmGT+8ZbdILiP62cUI3AJyY0e0IpbY1xM8rMDuwr01fDC22FtOSzUmR8XOjv6f\nwhco6pHrtQKBgHMtwDvISRgJI+woPcYgsoaB7lmEu6U4sGdEloYaLIbsG0j1e/Dt\nZa/9Q/Vlj1VtsLdMXKqNTxNNSCrgU27l73H/Id5yC3QZDV957XcJvpNtvcPptN8L\nDI+v414lVh9qQaEh7obb5IxXZPZbJUeGlpeBrWndHznez6qz1DfqyX7xAoGAK6K4\nXDzCgbkzOhvQcBszhAfEp9gWx20+w8Zh9S1rMSwVpVT+KZPFstI+TLYUgzCRkf3D\naXUJ5R3mlM9aCmfMaaxuM+4BzsTgt8A+dGymKdhKycuLhSYeA4IzLXmIINEuOF5c\nkzYsqpcQPwxVQBswFi0566XawR4bWRlzpnbnMWECgYEAlmlojnbERIS72QNOv6cJ\nfdqh6xgZk5LQwzT5vidHfUUzi2kZM77gMCu3UD8RSkXCoXLfnh9n/GZ1VBxCzQT7\nqGqA2tYB4Pmh8Ruskb6FPAxWeDWM4UYzHxLWVOPcM3Bkbyt1jF3UeJ598MHvHT2F\nF4ONmuUWkBwAfJ6St3KFUjk=\n-----END PRIVATE KEY-----\n",
-  "client_email": "chatbot@stellar-depth-419411.iam.gserviceaccount.com",
-  "client_id": "113818006855998040942",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/chatbot%40stellar-depth-419411.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
-}
-
-credentials = service_account.Credentials.from_service_account_info(credentials_info)
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "stellar-depth-419411-f072fec7d927.json"
 genai.configure(api_key="AIzaSyALAJkf3rKlp9kagLpanYb2ZWXdHn-aOKE")
-
-
-
-
-
 
 # Function to extract text from a specified PDF file
 def get_pdf_text(pdf_path):
