@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 # Load environment variables and Google API credentials
 load_dotenv()
 os.getenv("GOOGLE_API_KEY")
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "stellar-depth-419411-f072fec7d927.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "stellar-depth-419411-f072fec7d927.json"
 genai.configure(api_key="AIzaSyALAJkf3rKlp9kagLpanYb2ZWXdHn-aOKE")
 
 # Function to extract text from a specified PDF file
