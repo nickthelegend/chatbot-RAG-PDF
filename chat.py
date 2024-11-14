@@ -13,26 +13,34 @@ from dotenv import load_dotenv
 # Load environment variables and Google API credentials
 load_dotenv()
 os.getenv("GOOGLE_API_KEY")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "stellar-depth-419411-f072fec7d927.json"
+
+
+import json
+from google.oauth2 import service_account
+
+credentials_path = "stellar-depth-419411-f072fec7d927.json"  # Make sure this path is correct
+
+try:
+    with open(credentials_path, "r") as file:
+        credentials_info = json.load(file)
+except FileNotFoundError:
+    print("Error: JSON file not found. Check the file path.")
+except json.JSONDecodeError:
+    print("Error: Failed to decode JSON. Check the file contents.")
+
+# Initialize the credentials if JSON was successfully loaded
+if 'credentials_info' in locals():
+    credentials = service_account.Credentials.from_service_account_info(credentials_info)
+    print("Credentials successfully loaded.")
+else:
+    print("Failed to load credentials.")
+
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "stellar-depth-419411-f072fec7d927.json"
 genai.configure(api_key="AIzaSyALAJkf3rKlp9kagLpanYb2ZWXdHn-aOKE")
 
 
 
-import json
-import streamlit as st
-from google.oauth2 import service_account
 
-# Read the JSON credentials file and load its contents
-credentials_path = "stellar-depth-419411-f072fec7d927.json"  # Specify the path to your JSON file here
-
-with open(credentials_path) as file:
-    credentials_info = json.load(file)
-
-# Now use `credentials_info` to create a service account credentials object
-credentials = service_account.Credentials.from_service_account_info(credentials_info)
-
-# Test by printing or using `credentials` object as required
-print("Loaded credentials:", credentials)
 
 
 # Function to extract text from a specified PDF file
